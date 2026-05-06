@@ -32,13 +32,23 @@ export default defineEventHandler(async (event): Promise<WeatherResult> => {
   } catch {
     throw createError({ statusCode: 502, message: 'Open-Meteo API error' })
   }
-  const daily = responses[0].daily()
+  const response = responses[0]
+  if (!response) {
+    throw createError({ statusCode: 502, message: 'No response from Open-Meteo' })
+  }
+  const daily = response.daily()
   if (!daily) {
     throw createError({ statusCode: 404, message: 'No data for this date' })
   }
-  const tempMean = daily.variables(0)!.valuesArray()![0]
-  const timestamp = Number(daily.time()) * 1000
-  const resultDate = new Date(timestamp).toISOString().split('T')[0]
+
+  const valuesArray = daily.variables(0)?.valuesArray()
+  if (!valuesArray || valuesArray.length === 0) {
+    throw createError({ statusCode: 404, message: 'No temperature data for this date' })
+  }
+  const tempMean = valuesArray[0]
+  if (tempMean === undefined) {
+    throw createError({ statusCode: 404, message: 'No temperature data for this date' })
+  }
   return {
     date,
     tempMean: Math.round(tempMean * 10) / 10
