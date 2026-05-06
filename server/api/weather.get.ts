@@ -40,7 +40,7 @@ export default defineEventHandler(async (event): Promise<WeatherResult> => {
   const timestamp = Number(daily.time()) * 1000
   const resultDate = new Date(timestamp).toISOString().split('T')[0]
   return {
-    date: resultDate,
+    date,
     tempMean: Math.round(tempMean * 10) / 10
   }
 })
