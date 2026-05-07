@@ -14,6 +14,7 @@ Erstellung einer einseitigen Website mit Node.js und Nuxt auf TypeScript.
 - **openmeteo** — offizieller Open-Meteo API Client
 
 ## Projektstruktur
+```bash
 germany-travel/
 ├── app/
 │   ├── app.vue
@@ -30,6 +31,7 @@ germany-travel/
 │   └── api/
 │       └── weather.get.ts
 └── nuxt.config.ts
+```
 
 ## API
 
